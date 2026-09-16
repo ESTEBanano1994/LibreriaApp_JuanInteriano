@@ -64,3 +64,12 @@ Diferencia entre clase y objeto
 28. ¿Qué responsabilidad tiene el controlador?
  - controlar el codigo
 29. Dibuja el recorrido de un dato hasta MySQL.
+
+
+   investiga separación de responsabilidades, acoplamiento y cohesión
+ 
+   - La separación de responsabilidades consiste en separar el programas de manera que cada parte tenga una responsabilidad o trabajo en especifico
+   - La Coheción, se refiere a que tan relacionadas estan las cosas que hace una clase, por ejemplo si juntaramos dentro de una clase un libro, que se registre el libro, que se empaque y se venda tiene alta cohesión, todo tiene que ver con libro, pero si a libro le ponemos que registre un correo, que registre el usuario o que llame a conectarse con alguna otra parte de la libreria, tendria una baja cohesion, a parte de ser muchas responsabilidades, no estan relacionadas con lo principal que seria libro
+   - acoplamiento, a la hora de hablar de acoplamiento, hablamos de saber que tanto conoce y de que tanto depende una parte del programa de otra, por ejemplo si nuestro controller depende de muchas partes del programa y una no esta bien, esto afectara a la hora de ejecutar el programa, pero si hacemos que nuestro controller no depende de tantas cosas, sera mas facil el poder ejecutarlo
+  
+   - cuando hacemos un proyecto siempre buscaremos: separar responsabilidades, aumentar la cohesión y reducir el acoplamiento.
