@@ -3,8 +3,9 @@ package org.libreria.model;
 /**
  * Representa la relación entre un autor y un libro dentro del sistema.
  *
- * @author Juan Esteban
+ * @author Esteban Interiano
  * @version 1.0.0
+ * @see org.libreria.model.AutorLibro
  */
 public class AutorLibro {
 
@@ -18,7 +19,6 @@ public class AutorLibro {
      */
     public AutorLibro() {
     }
-
     /**
      * Construye una instancia de {@link AutorLibro} con los datos especificados.
      *
