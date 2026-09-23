@@ -1,7 +1,8 @@
 package org.libreria.model;
 
 /**
- *
+ * Representa la trayectoria de datos que requiere una venta para ser realizada
+ * 
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.LineaVenta

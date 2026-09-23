@@ -95,7 +95,7 @@ public class DetalleVenta {
 
     /**
      * establece la cantidad de libros
-     * @param cantidad
+     * @param cantidad cantidad de libros comprados
      */
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;

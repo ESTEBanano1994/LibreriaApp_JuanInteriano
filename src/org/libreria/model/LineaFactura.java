@@ -1,7 +1,8 @@
 package org.libreria.model;
 
 /**
- *
+ * Representa la trayectoria y datos que recolecta la factura antes de ser impresa
+ * 
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.LineaFactura

@@ -61,7 +61,7 @@ public class Cliente {
 
     /**
      * establece el nombre del cliente
-     * @param nombreCliente
+     * @param nombreCliente nombre de quien compra
      */
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
