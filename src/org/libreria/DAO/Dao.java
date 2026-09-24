@@ -1,8 +1,15 @@
 package org.libreria.DAO;
 
 /**
+ * Representa la separacion de la logica de negocio con la logica del acceso a la base de datos
  *
- * @author informatica
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.DAO.Dao
+ * @param <T> T
+ * @param <K> K
  */
-public interface Dao<T, K> extends Crud<T, K> {
+ public interface Dao<T, K> extends Crud<T, K> {
 }
+
+
