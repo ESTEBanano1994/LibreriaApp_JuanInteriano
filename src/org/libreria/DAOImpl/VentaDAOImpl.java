@@ -1,9 +1,5 @@
 package org.libreria.DAOImpl;
 
-/**
- *
- * @author informatica
- */
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,10 +15,25 @@ import org.libreria.model.LineaVenta;
 import org.libreria.model.Venta;
 import org.libreria.util.Conexion;
 
+/**
+ * Implementa las operaciones de acceso a datos relacionadas con las ventas
+ * de la libreria y permite realizar consultas, modificaciones y eliminaciones
+ * de registros en la base de datos.
+ *
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.Venta
+ * @see org.libreria.dao.VentaDAO
+ */
 public class VentaDAOImpl implements VentaDAO {
 
     private final DetalleVentaDAO detalleVentaDAO = new DetalleVentaDAOImpl();
 
+    /**
+     * Obtiene una lista con todas las ventas registradas en la base de datos.
+     *
+     * @return devuelve una lista con todas las ventas disponibles
+     */
     @Override
     public ArrayList<Venta> listarTodos() {
         ArrayList<Venta> lista = new ArrayList<>();
@@ -45,6 +56,12 @@ public class VentaDAOImpl implements VentaDAO {
         return lista;
     }
 
+    /**
+     * Busca una venta utilizando su numero de venta como identificador.
+     *
+     * @param noVenta identificador unico de la venta
+     * @return devuelve la venta encontrada o null si no existe
+     */
     @Override
     public Venta buscarPorId(Integer noVenta) {
         Venta v = null;
@@ -68,6 +85,12 @@ public class VentaDAOImpl implements VentaDAO {
         return v;
     }
 
+    /**
+     * Registra una nueva venta en la base de datos.
+     *
+     * @param venta venta que se desea registrar
+     * @return devuelve true si la venta fue creada correctamente
+     */
     @Override
     public boolean crear(Venta venta) {
         String sql = "{call sp_insertar_venta(?,?,?)}";
@@ -82,6 +105,12 @@ public class VentaDAOImpl implements VentaDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de una venta existente en la base de datos.
+     *
+     * @param venta venta que contiene los datos que se desean actualizar
+     * @return devuelve true si la venta fue actualizada correctamente
+     */
     @Override
     public boolean actualizar(Venta venta) {
         String sql = "{call sp_actualizar_venta(?,?,?)}";
@@ -96,9 +125,14 @@ public class VentaDAOImpl implements VentaDAO {
         }
     }
 
-    //crearVenta inserta el encabezado de la venta, obtiene el no_venta con
-    //LAST_INSERT_ID() y luego inserta cada línea y descuenta el stock.
-    //No es atómico (ver plan), por eso se reporta si algún detalle falla.
+    /**
+     * Registra una venta junto con sus lineas de detalle y descuenta
+     * las cantidades correspondientes del stock de cada libro.
+     *
+     * @param venta venta que contiene la informacion general de la operacion
+     * @param lineas lista de lineas de venta que forman parte de la venta
+     * @return devuelve el numero de venta generado o -1 si no fue posible crearla
+     */
     @Override
     public int crearVenta(Venta venta, List<LineaVenta> lineas) {
         int noVenta = -1;
@@ -132,6 +166,14 @@ public class VentaDAOImpl implements VentaDAO {
         return noVenta;
     }
 
+    /**
+     * Descuenta del inventario la cantidad de libros correspondiente
+     * a una linea de venta.
+     *
+     * @param isbn identificador del libro al que se le descontara stock
+     * @param cantidad cantidad de unidades que se desea descontar
+     * @return devuelve true si el stock fue descontado correctamente
+     */
     private boolean descontarStock(String isbn, int cantidad) {
         String sql = "{call sp_descontarstock(?,?)}";
         try (Connection conexion = Conexion.getInstancia().conectar();
@@ -144,6 +186,12 @@ public class VentaDAOImpl implements VentaDAO {
         }
     }
 
+    /**
+     * Elimina una venta de la base de datos utilizando su numero de venta.
+     *
+     * @param noVenta identificador unico de la venta que se desea eliminar
+     * @return devuelve true si la venta fue eliminada correctamente
+     */
     @Override
     public boolean eliminar(Integer noVenta) {
         String sql = "{call sp_eliminar_venta(?)}";
@@ -156,3 +204,4 @@ public class VentaDAOImpl implements VentaDAO {
         }
     }
 }
+
