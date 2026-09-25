@@ -1,9 +1,5 @@
 package org.libreria.DAOImpl;
 
-/**
- *
- * @author informatica
- */
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,8 +10,22 @@ import org.libreria.exception.DaoException;
 import org.libreria.model.Editorial;
 import org.libreria.util.Conexion;
 
+/**
+ * Implementa las operaciones de acceso a datos relacionadas con las editoriales
+ * de la libreria y permite realizar consultas y modificaciones en la base de datos.
+ *
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.Editorial
+ * @see org.libreria.dao.EditorialDAO
+ */
 public class EditorialDAOImpl implements EditorialDAO {
 
+    /**
+     * Obtiene una lista con todas las editoriales registradas en la base de datos.
+     *
+     * @return devuelve una lista con todas las editoriales disponibles
+     */
     @Override
     public ArrayList<Editorial> listarTodos() {
         ArrayList<Editorial> lista = new ArrayList<>();
@@ -37,6 +47,12 @@ public class EditorialDAOImpl implements EditorialDAO {
         return lista;
     }
 
+    /**
+     * Busca una editorial utilizando su NIT como identificador.
+     *
+     * @param nit identificador unico de la editorial
+     * @return devuelve la editorial encontrada o null si no existe
+     */
     @Override
     public Editorial buscarPorId(String nit) {
         Editorial e = null;
@@ -59,6 +75,12 @@ public class EditorialDAOImpl implements EditorialDAO {
         return e;
     }
 
+    /**
+     * Registra una nueva editorial en la base de datos.
+     *
+     * @param editorial editorial que se desea registrar
+     * @return devuelve true si la editorial fue creada correctamente
+     */
     @Override
     public boolean crear(Editorial editorial) {
         String sql = "{call sp_crear_editorial(?,?,?,?)}";
@@ -74,6 +96,12 @@ public class EditorialDAOImpl implements EditorialDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de una editorial existente en la base de datos.
+     *
+     * @param editorial editorial que contiene los datos que se desean actualizar
+     * @return devuelve true si la editorial fue actualizada correctamente
+     */
     @Override
     public boolean actualizar(Editorial editorial) {
         String sql = "{call sp_actualizar_editorial(?,?,?,?)}";
@@ -89,6 +117,12 @@ public class EditorialDAOImpl implements EditorialDAO {
         }
     }
 
+    /**
+     * Elimina una editorial de la base de datos utilizando su NIT.
+     *
+     * @param nit identificador unico de la editorial que se desea eliminar
+     * @return devuelve true si la editorial fue eliminada correctamente
+     */
     @Override
     public boolean eliminar(String nit) {
         String sql = "{call sp_eliminar_editorial(?)}";
@@ -101,3 +135,4 @@ public class EditorialDAOImpl implements EditorialDAO {
         }
     }
 }
+
