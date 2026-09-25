@@ -6,8 +6,8 @@ package org.libreria.DAO;
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.DAO.Dao
- * @param <T> T
- * @param <K> K
+ * @param <T> entidad
+ * @param <K> identificador unico
  */
  public interface Dao<T, K> extends Crud<T, K> {
 }
