@@ -1,8 +1,12 @@
 package org.libreria.DAOImpl;
 
 /**
- *
- * @author informatica
+ * Implementa las operaciones de acceso a datos relacionadas con las categorias 
+ * de la libreria y permite realizar consultas y modificaciones en la base de datos relacionadas a ClienteDaoImpl
+ * 
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.AutorLibro
  */
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -14,8 +18,16 @@ import org.libreria.exception.DaoException;
 import org.libreria.model.Cliente;
 import org.libreria.util.Conexion;
 
+/**
+ *
+ * @author Esteban Interiano 
+ */
 public class ClienteDAOImpl implements ClienteDAO {
 
+    /**
+     * Obtiene una lista de los clientes junto con sus datos
+     * @return devuelve la lista de clientes mostrando sus nombres, apellidos y correos electronicos
+     */
     @Override
     public ArrayList<Cliente> listarTodos() {
         ArrayList<Cliente> lista = new ArrayList<>();
@@ -35,6 +47,11 @@ public class ClienteDAOImpl implements ClienteDAO {
         return lista;
     }
 
+    /**
+     * Obtiene el cui del cliente
+     * @param cui identificador numerario unico por cliente en su factura
+     * @return devuelve el cui del cliente
+     */
     @Override
     public Cliente buscarPorId(Long cui) {
         Cliente c = null;
@@ -56,6 +73,11 @@ public class ClienteDAOImpl implements ClienteDAO {
         return c;
     }
 
+    /**
+     * obtiene un dato verdadero o falso para poder crear un cliente
+     * @param cliente comprador
+     * @return devuelve la validacion para póder crear un nuevo cliente en la base de datos
+     */
     @Override
     public boolean crear(Cliente cliente) {
         String sql = "{call sp_insertarcliente(?,?,?,?)}";
@@ -70,6 +92,11 @@ public class ClienteDAOImpl implements ClienteDAO {
         }
     }
 
+    /**
+     * obtiene un valor verdadero o falso para poder actualizar datos de un cliente
+     * @param cliente comprador
+     * @return devuelve la validacion para poder realizar una actualizacion a un cliente
+     */
     @Override
     public boolean actualizar(Cliente cliente) {
         String sql = "{call sp_actualizarcliente(?,?,?,?)}";
@@ -84,6 +111,11 @@ public class ClienteDAOImpl implements ClienteDAO {
         }
     }
 
+    /**
+     * obtiene un valor verdadero o falso para poder realizar la elminacion de un cui
+     * @param cui identificador numeral unico del cliente
+     * @return devuelve la validacion para realizar la eliminacion de un cui
+     */
     @Override
     public boolean eliminar(Long cui) {
         String sql = "{call sp_eliminarcliente(?)}";
