@@ -1,0 +1,106 @@
+package org.libreria.DAOImpl;
+
+/**
+ *
+ * @author informatica
+ */
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import org.libreria.dao.DetalleVentaDAO;
+import org.libreria.exception.DaoException;
+import org.libreria.model.DetalleVenta;
+import org.libreria.util.Conexion;
+
+public class DetalleVentaDAOImpl implements DetalleVentaDAO {
+
+    @Override
+    public ArrayList<DetalleVenta> listarTodos() {
+        ArrayList<DetalleVenta> lista = new ArrayList<>();
+        String sql = "{call sp_listar_detalle_venta()}";
+        try (Connection conexion = Conexion.getInstancia().conectar();
+                CallableStatement consulta = conexion.prepareCall(sql);
+                ResultSet rs = consulta.executeQuery()) {
+            while (rs.next()) {
+                DetalleVenta dv = new DetalleVenta();
+                dv.setIdDetalleVenta(rs.getInt("id_detalle_venta"));
+                dv.setNoVenta(rs.getInt("no_venta"));
+                dv.setIsbn(rs.getString("isbn"));
+                dv.setCantidad(rs.getInt("cantidad"));
+                dv.setPrecio(rs.getDouble("precio"));
+                lista.add(dv);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Error al listar detalle_venta: " + e.getMessage(), e);
+        }
+        return lista;
+    }
+
+    @Override
+    public DetalleVenta buscarPorId(Integer idDetalleVenta) {
+        DetalleVenta dv = null;
+        String sql = "{call sp_buscar_detalle_venta(?)}";
+        try (Connection conexion = Conexion.getInstancia().conectar();
+                CallableStatement consulta = conexion.prepareCall(sql)) {
+            consulta.setInt(1, idDetalleVenta);
+            try (ResultSet rs = consulta.executeQuery()) {
+                if (rs.next()) {
+                    dv = new DetalleVenta();
+                    dv.setIdDetalleVenta(rs.getInt("id_detalle_venta"));
+                    dv.setNoVenta(rs.getInt("no_venta"));
+                    dv.setIsbn(rs.getString("isbn"));
+                    dv.setCantidad(rs.getInt("cantidad"));
+                    dv.setPrecio(rs.getDouble("precio"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Error al buscar detalle_venta: " + e.getMessage(), e);
+        }
+        return dv;
+    }
+
+    @Override
+    public boolean crear(DetalleVenta detalleVenta) {
+        String sql = "{call sp_insertar_detalle_venta(?,?,?,?)}";
+        try (Connection conexion = Conexion.getInstancia().conectar();
+                CallableStatement consulta = conexion.prepareCall(sql)) {
+            consulta.setInt(1, detalleVenta.getNoVenta());
+            consulta.setString(2, detalleVenta.getIsbn());
+            consulta.setInt(3, detalleVenta.getCantidad());
+            consulta.setDouble(4, detalleVenta.getPrecio());
+            return consulta.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException("Error al insertar detalle_venta: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean actualizar(DetalleVenta detalleVenta) {
+        String sql = "{call sp_actualizar_detalle_venta(?,?,?,?,?)}";
+        try (Connection conexion = Conexion.getInstancia().conectar();
+                CallableStatement consulta = conexion.prepareCall(sql)) {
+            consulta.setInt(1, detalleVenta.getIdDetalleVenta());
+            consulta.setInt(2, detalleVenta.getNoVenta());
+            consulta.setString(3, detalleVenta.getIsbn());
+            consulta.setInt(4, detalleVenta.getCantidad());
+            consulta.setDouble(5, detalleVenta.getPrecio());
+            return consulta.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException("Error al actualizar detalle_venta: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean eliminar(Integer idDetalleVenta) {
+        String sql = "{call sp_eliminar_detalle_venta(?)}";
+        try (Connection conexion = Conexion.getInstancia().conectar();
+                CallableStatement consulta = conexion.prepareCall(sql)) {
+            consulta.setInt(1, idDetalleVenta);
+            return consulta.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException("Error al eliminar detalle_venta: " + e.getMessage(), e);
+        }
+    }
+}
