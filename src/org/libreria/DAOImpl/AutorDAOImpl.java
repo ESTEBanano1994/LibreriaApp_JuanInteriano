@@ -1,8 +1,11 @@
 package org.libreria.DAOImpl;
 
 /**
+ * Representa la validacion de datos del AutorDAO y su conexion con DAOImpl
  *
- * @author informatica
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.DAOImpl.AutorDAOImpl
  */
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -14,8 +17,16 @@ import org.libreria.exception.DaoException;
 import org.libreria.model.Autor;
 import org.libreria.util.Conexion;
 
+/**
+ * 
+ * @author Esteban Interiano
+ */
 public class AutorDAOImpl implements AutorDAO {
 
+    /**
+     *
+     * @return
+     */
     @Override
     public ArrayList<Autor> listarTodos() {
         ArrayList<Autor> lista = new ArrayList<>();
@@ -38,6 +49,12 @@ public class AutorDAOImpl implements AutorDAO {
         return lista;
     }
 
+    /**
+     * obtiene el identificador del autor para realizar una busqueda
+     * obtiene los datos del autor, nombre, apellido, nacionalidad y biografia
+     * @param idAutor identificador unico del autor
+     * @return devuelve al autor buscado junto con sus datos
+     */
     @Override
     public Autor buscarPorId(Integer idAutor) {
         Autor a = null;
@@ -61,6 +78,12 @@ public class AutorDAOImpl implements AutorDAO {
         return a;
     }
 
+    /**
+     * obtiene un valor verdadero o falso para poder crear un nuevo autor
+     * para crear el nuevo autor se busca un nombre, apellido, nacionalidad y biografia
+     * @param autor escritor de un libro
+     * @return devuelve el valor verdero falso para la creacion de un nuevo autor
+     */
     @Override
     public boolean crear(Autor autor) {
         String sql = "{call sp_insertarautor(?,?,?,?)}";
@@ -76,6 +99,11 @@ public class AutorDAOImpl implements AutorDAO {
         }
     }
 
+    /**
+     * obtiene un valor verdadero o falso para poder actualizar los datos de un autor
+     * @param autor escritor del libro y persona a quien se le hacen las modificaciones
+     * @return devuelve las modificaciones realizadas al autor
+     */
     @Override
     public boolean actualizar(Autor autor) {
         String sql = "{call sp_actualizarautor(?,?,?,?,?)}";
@@ -92,6 +120,11 @@ public class AutorDAOImpl implements AutorDAO {
         }
     }
 
+    /**
+     * obtiene el valor verdadero o falso para poder realizar la operacion de eliminar un autor en base a su id
+     * @param idAutor identificador unico del autor
+     * @return devuelve la eliminacion de un autor
+     */
     @Override
     public boolean eliminar(Integer idAutor) {
         String sql = "{call sp_eliminarautor(?)}";
