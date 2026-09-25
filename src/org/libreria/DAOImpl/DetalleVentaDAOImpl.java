@@ -1,9 +1,5 @@
 package org.libreria.DAOImpl;
 
-/**
- *
- * @author informatica
- */
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,8 +10,23 @@ import org.libreria.exception.DaoException;
 import org.libreria.model.DetalleVenta;
 import org.libreria.util.Conexion;
 
+/**
+ * Implementa las operaciones de acceso a datos relacionadas con los detalles
+ * de las ventas y permite realizar consultas y modificaciones en la base de datos.
+ *
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.DetalleVenta
+ * @see org.libreria.dao.DetalleVentaDAO
+ */
 public class DetalleVentaDAOImpl implements DetalleVentaDAO {
 
+    /**
+     * Obtiene una lista con todos los detalles de ventas registrados
+     * en la base de datos.
+     *
+     * @return devuelve una lista con todos los detalles de ventas registrados
+     */
     @Override
     public ArrayList<DetalleVenta> listarTodos() {
         ArrayList<DetalleVenta> lista = new ArrayList<>();
@@ -38,6 +49,12 @@ public class DetalleVentaDAOImpl implements DetalleVentaDAO {
         return lista;
     }
 
+    /**
+     * Busca un detalle de venta utilizando su identificador.
+     *
+     * @param idDetalleVenta identificador unico del detalle de venta
+     * @return devuelve el detalle de venta encontrado o null si no existe
+     */
     @Override
     public DetalleVenta buscarPorId(Integer idDetalleVenta) {
         DetalleVenta dv = null;
@@ -61,6 +78,12 @@ public class DetalleVentaDAOImpl implements DetalleVentaDAO {
         return dv;
     }
 
+    /**
+     * Registra un nuevo detalle de venta en la base de datos.
+     *
+     * @param detalleVenta detalle de venta que se desea registrar
+     * @return devuelve true si el detalle de venta fue creado correctamente
+     */
     @Override
     public boolean crear(DetalleVenta detalleVenta) {
         String sql = "{call sp_insertar_detalle_venta(?,?,?,?)}";
@@ -76,6 +99,12 @@ public class DetalleVentaDAOImpl implements DetalleVentaDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de un detalle de venta existente en la base de datos.
+     *
+     * @param detalleVenta detalle de venta que contiene los datos que se desean actualizar
+     * @return devuelve true si el detalle de venta fue actualizado correctamente
+     */
     @Override
     public boolean actualizar(DetalleVenta detalleVenta) {
         String sql = "{call sp_actualizar_detalle_venta(?,?,?,?,?)}";
@@ -92,6 +121,12 @@ public class DetalleVentaDAOImpl implements DetalleVentaDAO {
         }
     }
 
+    /**
+     * Elimina un detalle de venta de la base de datos utilizando su identificador.
+     *
+     * @param idDetalleVenta identificador unico del detalle de venta que se desea eliminar
+     * @return devuelve true si el detalle de venta fue eliminado correctamente
+     */
     @Override
     public boolean eliminar(Integer idDetalleVenta) {
         String sql = "{call sp_eliminar_detalle_venta(?)}";
@@ -104,3 +139,4 @@ public class DetalleVentaDAOImpl implements DetalleVentaDAO {
         }
     }
 }
+
