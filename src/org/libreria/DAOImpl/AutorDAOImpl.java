@@ -121,7 +121,7 @@ public class AutorDAOImpl implements AutorDAO {
     }
 
     /**
-     * obtiene el valor verdadero o falso para poder realizar la operacion de eliminar un autor en base a su id
+     * obtiene el valor verdadero o falso para poder realizar la operacion de eliminar un autor en base a su id :)
      * @param idAutor identificador unico del autor
      * @return devuelve la eliminacion de un autor
      */
