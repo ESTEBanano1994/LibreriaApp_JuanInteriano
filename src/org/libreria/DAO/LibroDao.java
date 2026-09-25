@@ -10,6 +10,8 @@ package org.libreria.DAO;
  * @author Juan Esteban Interiano Riera
  * @version 1.0.0
  */
-public interface LibroDAO extends Crud<Libro, String> {
+import org.libreria.model.Libro;
+
+public interface LibroDAO extends Crud<Libro, String>{
     
 }
