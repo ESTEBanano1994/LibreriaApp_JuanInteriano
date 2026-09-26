@@ -18,7 +18,7 @@ import org.libreria.util.Conexion;
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.Usuario
- * @see org.libreria.dao.UsuarioDAO
+ * @see org.libreria.DAO.UsuarioDAO
  */
 public class UsuarioDAOImpl implements UsuarioDAO {
 

@@ -10,7 +10,7 @@ package org.libreria.model;
 public class AutorLibro {
 
     private int idAutorLibro;
-    private int idAutor;
+    private int IdAutor;
     private String isbn;
 
     /**
@@ -28,7 +28,7 @@ public class AutorLibro {
      */
     public AutorLibro(int idAutorLibro, int idAutor, String isbn) {
         this.idAutorLibro = idAutorLibro;
-        this.idAutor = idAutor;
+        this.IdAutor = idAutor;
         this.isbn = isbn;
     }
 
@@ -56,7 +56,7 @@ public class AutorLibro {
      * @param idAutor identificador del autor.
      */
     public void setIdAutor(int idAutor) {
-        this.idAutor = idAutor;
+        this.IdAutor = idAutor;
     }
 
     /**
@@ -65,7 +65,7 @@ public class AutorLibro {
      * @param idAutor identificador del autor.
      */
     public void setidAutor(int idAutor) {
-        this.idAutor = idAutor;
+        this.IdAutor = idAutor;
     }
 
     /**
@@ -84,6 +84,10 @@ public class AutorLibro {
      */
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public int getIdAutor() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
 

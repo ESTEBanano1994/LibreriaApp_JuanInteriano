@@ -23,7 +23,7 @@ import org.libreria.util.Conexion;
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.Venta
- * @see org.libreria.dao.VentaDAO
+ * @see org.libreria.DAO.VentaDAO
  */
 public class VentaDAOImpl implements VentaDAO {
 

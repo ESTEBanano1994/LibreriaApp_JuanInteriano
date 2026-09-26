@@ -10,7 +10,7 @@ package org.libreria.DAO;
 import org.libreria.model.Editorial;
 
 /**
- *
+ * Representa la relación entre un autor y un libro dentro del sistema.
  * @author Esteban Interiano
  */
 public interface EditorialDAO extends Crud<Editorial, String>{

@@ -18,7 +18,7 @@ import org.libreria.model.AutorLibro;
 import org.libreria.util.Conexion;
 
 /**
- *
+ * Representa la separacion entre este codigo y su base de datos SQL
  * @author Esteban Interiano
  */
 public class AutorLibroDAOImpl implements AutorLibroDAO {

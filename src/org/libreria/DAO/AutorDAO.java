@@ -10,7 +10,7 @@ package org.libreria.DAO;
 import org.libreria.model.Autor;
 
 /**
- * r
+ *  Representa la separacion de este codigo con la base de datos SQL en la clase de Autor
  * @author Esteban Interiano
  */
 public interface AutorDAO extends Crud<Autor, Integer>{

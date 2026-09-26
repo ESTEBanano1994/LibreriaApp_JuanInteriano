@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import org.libreria.model.Usuario;
 
 /**
- *
+ * Representa la separacion del codigo de Usuario con su parte en la base de datos SQL
  * @author Esteban Interiano
  */
 public interface UsuarioDAO {

@@ -10,7 +10,7 @@ package org.libreria.DAO;
 import org.libreria.model.Cliente;
 
 /**
- *
+ * Representa la relación entre un autor y un libro dentro del sistema.
  * @author Esteban Interiano
  */
 public interface ClienteDAO extends Crud<Cliente, Long>{

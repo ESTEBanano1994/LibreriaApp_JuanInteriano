@@ -1,5 +1,7 @@
 package org.libreria.DAO;
 
+import org.libreria.model.Libro;
+
 /**
  * Interfaz DAO encargada de definir las operaciones de acceso a datos :)
  * para la entidad {@link Libro}.
@@ -10,6 +12,6 @@ package org.libreria.DAO;
  * @author Juan Esteban Interiano Riera
  * @version 1.0.0
  */
-public interface LibroDAO extends Crud<Libro, String> {
+public interface LibroDao extends Crud<Libro, String> {
     
 }

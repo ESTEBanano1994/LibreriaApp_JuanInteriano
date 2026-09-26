@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.logging.Logger;
-// import org.libreria.manager.SesionContext;
+import org.libreria.manager.SesionContext;
 import org.libreria.model.Usuario;
 
 /**

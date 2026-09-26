@@ -13,7 +13,7 @@ import org.libreria.model.LineaVenta;
 import org.libreria.model.Venta;
 
 /**
- *
+ * Representa la separacion de codigo con la base de datos SQL de venta
  * @author Esteban Interiano
  */
 public interface VentaDAO extends Crud<Venta, Integer>{

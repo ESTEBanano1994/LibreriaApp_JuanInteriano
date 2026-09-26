@@ -17,7 +17,7 @@ import org.libreria.util.Conexion;
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.DetalleVenta
- * @see org.libreria.dao.DetalleVentaDAO
+ * @see org.libreria.DAO.DetalleVentaDAO
  */
 public class DetalleVentaDAOImpl implements DetalleVentaDAO {
 

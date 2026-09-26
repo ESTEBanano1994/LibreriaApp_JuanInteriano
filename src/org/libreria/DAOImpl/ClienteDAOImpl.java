@@ -19,7 +19,7 @@ import org.libreria.model.Cliente;
 import org.libreria.util.Conexion;
 
 /**
- *
+ * Implementa las operaciones de acceso a datos relacionadas con las categorias 
  * @author Esteban Interiano 
  */
 public class ClienteDAOImpl implements ClienteDAO {

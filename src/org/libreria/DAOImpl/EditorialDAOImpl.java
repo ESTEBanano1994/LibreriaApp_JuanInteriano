@@ -17,7 +17,7 @@ import org.libreria.util.Conexion;
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.Editorial
- * @see org.libreria.dao.EditorialDAO
+ * @see org.libreria.DAO.EditorialDAO
  */
 public class EditorialDAOImpl implements EditorialDAO {
 

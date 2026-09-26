@@ -18,7 +18,7 @@ import org.libreria.model.Autor;
 import org.libreria.util.Conexion;
 
 /**
- * 
+ * Representa la validacion de datos del AutorDAO y su conexion con DAOImpl
  * @author Esteban Interiano
  */
 public class AutorDAOImpl implements AutorDAO {

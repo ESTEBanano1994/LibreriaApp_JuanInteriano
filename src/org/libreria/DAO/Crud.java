@@ -10,7 +10,7 @@ package org.libreria.DAO;
 import java.util.ArrayList;
 
 /**
- *
+ * Representa la relación entre un autor y un libro dentro del sistema.
  * @author Esteban Interiano
  * @param <T> entidad
  * @param <K> id

@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.libreria.DAO.LibroDAO;
+import org.libreria.DAO.LibroDao;
 import org.libreria.exception.DaoException;
 import org.libreria.model.Libro;
 import org.libreria.util.Conexion;
@@ -16,10 +16,10 @@ import org.libreria.util.Conexion;
  *
  * @author Esteban Interiano
  * @version 1.0.0
- * @see org.libro.model.Libro
- * @see org.libro.dao.LibroDAO
+ * @see org.libreria.model.Libro
+ * @see org.libreria.DAO.LibroDao
  */
-public class LibroDAOImpl implements LibroDAO {
+public class LibroDAOImpl implements LibroDao {
 
     /**
      * Obtiene una lista con todos los libros registrados en la base de datos.

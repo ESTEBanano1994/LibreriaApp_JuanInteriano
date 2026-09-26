@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.libreria.dao.CategoriaDAO;
+import org.libreria.DAO.CategoriaDAO;
 import org.libreria.exception.DaoException;
 import org.libreria.model.Categoria;
 import org.libreria.util.Conexion;
@@ -17,7 +17,7 @@ import org.libreria.util.Conexion;
  * @author Esteban Interiano
  * @version 1.0.0
  * @see org.libreria.model.Categoria
- * @see org.libreria.dao.CategoriaDAO
+ * @see org.libreria.DAO.CategoriaDAO
  */
 public class CategoriaDAOImpl implements CategoriaDAO {
 
@@ -118,3 +118,11 @@ public class CategoriaDAOImpl implements CategoriaDAO {
     public boolean eliminar(Integer idCategoria) {
         String sql = "{call sp_eliminarcategoria(?)}";
         try (Connection conexion = Conexion.getInstancia().conectar();
+                CallableStatement consulta = conexion.prepareCall(sql)) {
+            consulta.setInt(1, idCategoria);
+            return consulta.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException("Error al eliminar categoria: " + e.getMessage(), e);
+        }
+    }
+}
