@@ -48,5 +48,34 @@ Tipo primitivo
 4.	Lo encontramos a la hora de hacer métodos, en donde estos pueden llamar una clase wrapper ya convertida para poder ejecutarse
 5.	Nos ayuda realizar acciones dentro del código que de otra manera sin la clase wrapper no podrían realizarse
 
-       
+
+DAO (Data Access Object)
+1.Es un patrón de diseño que proporciona una interfaz abstracta para interactuar con la base de datos, separando la lógica de negocio de los detalles de acceso a los datos.
+2. Para mí, el DAO es como el mesero de un restaurante; nosotros (la lógica de la aplicación) le pedimos lo que queremos comer y él va a la cocina (la base de datos) a traérnoslo, sin que tengamos que meternos nosotros mismos a cocinar ni a buscar los ingredientes.
+3.Aparece como una clase o interfaz dedicada a la base de datos, con métodos como insertar(), eliminar() o obtenerTodos(). Por ejemplo, podríamos tener una clase UsuarioDAO con un método public List<Usuario> listarUsuarios().
+4.Nos ayuda a mantener el código ordenado y desacoplado. Si el día de mañana cambiamos de base de datos (por ejemplo, de MySQL a PostgreSQL), solo modificamos las clases DAO y no toda nuestra aplicación.
+
+JDBC (Java Database Connectivity)
+1. Es una API estándar de Java que permite a las aplicaciones conectarse a bases de datos relacionales, ejecutar consultas SQL y procesar los resultados.
+2. Es como el cable o puente de comunicación que conecta nuestro programa Java con la base de datos. Sin este conector, Java y la base de datos hablarían idiomas distintos y no podrían entenderse.
+3. Lo encontramos al usar paquetes como java.sql.*, cargando el driver de la base de datos y abriendo conexiones con comandos como DriverManager.getConnection("jdbc:mysql://localhost:3306/mi_db", "root", "1234").
+4. Nos ayuda a enviar instrucciones en lenguaje SQL directamente a la base de datos desde nuestras clases de Java y recibir la información devuelta para poder manipularla dentro del sistema.
+
+Singleton
+1. Es un patrón de diseño creacional que garantiza que una clase tenga únicamente una instancia en toda la aplicación y proporciona un punto de acceso global a ella.
+2.El Singleton es como el director de un colegio; dentro de la institución solo puede existir un único director a la vez. No podemos andar creando varios directores, todos deben acudir al mismo cuando se requiera su función.
+3. Se reconoce porque la clase tiene un constructor privado y un método estático como public static Conexion getInstance(). De esta manera, si la instancia ya existe, devuelve la misma en lugar de crear una nueva con new.
+4. Nos ayuda a optimizar el uso de recursos y memoria en el sistema, evitando crear objetos repetidos cuando con uno solo es suficiente para realizar la tarea (como manejar una sola conexión a la base de datos).
+
+PreparedStatement
+1. Es una interfaz de JDBC que representa una instrucción SQL precompilada, la cual permite pasar parámetros de forma segura y eficiente antes de ejecutarse.
+2. Es como un formulario impreso con espacios en blanco (campos por rellenar). La estructura de la oración SQL ya está fija y lista, y nosotros solo nos encargamos de escribir los valores específicos dentro de las casillas en blanco.
+3. Lo encontramos usando el signo de interrogación ? dentro de la consulta SQL y llamando a la interfaz desde la conexión: PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM producto WHERE id = ?");, para luego asignar el valor con stmt.setInt(1, 10);.
+4. Nos ayuda a ejecutar consultas a la base de datos de manera mucho más rápida (porque la sentencia ya está procesada) y previene fallos de seguridad graves como los ataques de inyección SQL.
+
+Inyección SQL
+1. Es una vulnerabilidad de seguridad en la que un atacante inserta o "inyecta" código SQL malicioso dentro de los campos de entrada de una aplicación para alterar las consultas a la base de datos.
+2. Es como si en una hoja de firma donde debes poner tu nombre, escribas una instrucción engañosa como: "Firme aquí y además regáleme todo su dinero". Si la persona lee la hoja sin verificar, termina ejecutando la orden falsa junto con la original.
+3. Ocurre cuando concatenamos texto directamente en las consultas en lugar de usar parámetros seguros. Por ejemplo, al escribir "SELECT * FROM usuario WHERE nombre = '" + txtNombre.getText() + "'" y el usuario ingresa ' OR '1'='1, lo cual salta los filtros de autenticación.
+4. Conocer la inyección SQL nos ayuda a crear programas seguros, protegernos contra robos o borrados masivos de información y recordarnos la importancia de validar las entradas del usuario usando herramientas como PreparedStatement.
 
