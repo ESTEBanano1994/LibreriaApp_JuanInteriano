@@ -1,9 +1,5 @@
 package org.libreria.controller;
 
-/**
- *
- * @author PC
- */
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -25,48 +21,151 @@ import org.libreria.exception.ValidacionException;
 import org.libreria.model.Cliente;
 import org.libreria.system.Main;
 
+/**
+ * Controlador encargado de gestionar la interfaz gráfica de clientes.
+ * Permite registrar, editar, consultar, buscar y navegar entre los
+ * registros de clientes almacenados en el sistema.
+ *
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.Cliente
+ * @see org.libreria.DAO.ClienteDAO
+ * @see org.libreria.DAOImpl.ClienteDAOImpl
+ */
 public class ClienteController implements Initializable {
 
+    /**
+     * Campo de texto para ingresar el CUI del cliente.
+     */
     @FXML
     private TextField txtCui;
+
+    /**
+     * Campo de texto para ingresar el nombre del cliente.
+     */
     @FXML
     private TextField txtNombre;
+
+    /**
+     * Campo de texto para ingresar el apellido del cliente.
+     */
     @FXML
     private TextField txtApellido;
+
+    /**
+     * Campo de texto para ingresar el correo electrónico del cliente.
+     */
     @FXML
     private TextField txtCorreo;
+
+    /**
+     * Etiqueta utilizada para mostrar mensajes al usuario.
+     */
     @FXML
     private Label lblMensaje;
+
+    /**
+     * Tabla que muestra los clientes registrados.
+     */
     @FXML
-    private TableView<Cliente> tablaClientes;//Tabla de entidad: cliente
+    private TableView<Cliente> tablaClientes;
+
+    /**
+     * Columna que muestra el CUI del cliente.
+     */
     @FXML
     private TableColumn colCUI;
+
+    /**
+     * Columna que muestra el nombre del cliente.
+     */
     @FXML
     private TableColumn colNombreCliente;
+
+    /**
+     * Columna que muestra el apellido del cliente.
+     */
     @FXML
     private TableColumn colApellidoCliente;
+
+    /**
+     * Columna que muestra el correo electrónico del cliente.
+     */
     @FXML
     private TableColumn colCorreoElectronico;
+
+    /**
+     * Botón utilizado para crear un nuevo cliente.
+     */
     @FXML
     private Button btnNuevo;
+
+    /**
+     * Botón utilizado para editar un cliente seleccionado.
+     */
     @FXML
     private Button btnEditar;
+
+    /**
+     * Botón utilizado para seleccionar el primer registro.
+     */
     @FXML
     private Button btnPrimero;
+
+    /**
+     * Botón utilizado para seleccionar el registro anterior.
+     */
     @FXML
     private Button btnAnterior;
+
+    /**
+     * Botón utilizado para seleccionar el registro siguiente.
+     */
     @FXML
     private Button btnSiguiente;
+
+    /**
+     * Botón utilizado para seleccionar el último registro.
+     */
     @FXML
     private Button btnUltimo;
+
+    /**
+     * Campo de texto utilizado para buscar clientes.
+     */
     @FXML
     private TextField txtBuscar;
-    
-    private boolean modoEdicion = false;
-    private final ClienteDAO clienteDAO = new ClienteDAOImpl();
-    private final ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();//Entidad:Cliente
-    private final FilteredList<Cliente> clientesFiltrados = new FilteredList<>(listaClientes, p -> true);
 
+    /**
+     * Indica si el formulario se encuentra en modo edición.
+     */
+    private boolean modoEdicion = false;
+
+    /**
+     * Objeto encargado de realizar las operaciones de acceso a datos
+     * relacionadas con los clientes.
+     */
+    private final ClienteDAO clienteDAO = new ClienteDAOImpl();
+
+    /**
+     * Lista observable que contiene los clientes registrados.
+     */
+    private final ObservableList<Cliente> listaClientes
+            = FXCollections.observableArrayList();
+
+    /**
+     * Lista filtrada utilizada para realizar búsquedas dinámicas
+     * sobre los clientes registrados.
+     */
+    private final FilteredList<Cliente> clientesFiltrados
+            = new FilteredList<>(listaClientes, p -> true);
+
+    /**
+     * Inicializa el controlador y configura los componentes de la vista.
+     *
+     * @param location ubicación utilizada para resolver la vista
+     * @param resources recursos utilizados por la vista
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarTabla();
@@ -76,6 +175,10 @@ public class ClienteController implements Initializable {
         configurarBusqueda();
     }
 
+    /**
+     * Configura las columnas de la tabla para mostrar los atributos
+     * correspondientes de cada cliente.
+     */
     public void configurarTabla() {
         colCUI.setCellValueFactory(new PropertyValueFactory<Cliente, Long>("cui"));
         colNombreCliente.setCellValueFactory(new PropertyValueFactory<Cliente, String>("nombreCliente"));
@@ -83,6 +186,9 @@ public class ClienteController implements Initializable {
         colCorreoElectronico.setCellValueFactory(new PropertyValueFactory<Cliente, String>("correoElectronico"));
     }
 
+    /**
+     * Carga desde la base de datos la lista de clientes registrados.
+     */
     private void cargarTabla() {
         try {
             listaClientes.setAll(clienteDAO.listarTodos());
@@ -91,12 +197,20 @@ public class ClienteController implements Initializable {
         }
     }
 
+    /**
+     * Configura el listener utilizado para detectar cambios
+     * en el campo de búsqueda.
+     */
     private void configurarBusqueda() {
         txtBuscar.textProperty().addListener((obs, oldValue, newValue) -> filtrarClientes());
     }
 
+    /**
+     * Filtra la lista de clientes utilizando el CUI, nombre o apellido.
+     */
     private void filtrarClientes() {
         String busqueda = txtBuscar.getText().trim().toLowerCase();
+
         if (busqueda.isEmpty()) {
             clientesFiltrados.setPredicate(p -> true);
         } else {
@@ -107,6 +221,10 @@ public class ClienteController implements Initializable {
         }
     }
 
+    /**
+     * Configura el comportamiento de selección de filas de la tabla.
+     * Al seleccionar un cliente, sus datos son cargados en el formulario.
+     */
     private void seleccionarFila() {
         tablaClientes.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -120,6 +238,10 @@ public class ClienteController implements Initializable {
                 });
     }
 
+    /**
+     * Guarda un nuevo cliente o actualiza uno existente dependiendo
+     * del modo en que se encuentre el formulario.
+     */
     @FXML
     private void handleGuardar() {
         try {
@@ -140,6 +262,7 @@ public class ClienteController implements Initializable {
             cliente.setCorreoElectronico(txtCorreo.getText().trim());
 
             boolean guardado;
+
             if (modoEdicion) {
                 guardado = clienteDAO.actualizar(cliente);
             } else {
@@ -158,6 +281,7 @@ public class ClienteController implements Initializable {
             } else {
                 mostrarError("No se pudo guardar el cliente.");
             }
+
         } catch (ValidacionException e) {
             mostrarAdvertencia(e.getMessage());
             lblMensaje.setText(e.getMessage());
@@ -166,6 +290,10 @@ public class ClienteController implements Initializable {
         }
     }
 
+    /**
+     * Cancela la operación actual y restablece el formulario
+     * a su estado inicial.
+     */
     @FXML
     private void handleCancelar() {
         limpiarFormulario();
@@ -175,6 +303,9 @@ public class ClienteController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Prepara el formulario para registrar un nuevo cliente.
+     */
     @FXML
     private void handleNuevoCliente() {
         modoEdicion = false;
@@ -186,19 +317,27 @@ public class ClienteController implements Initializable {
         txtCui.requestFocus();
     }
 
+    /**
+     * Prepara el formulario para editar el cliente seleccionado.
+     */
     @FXML
     private void handleEditar() {
         Cliente seleccion = tablaClientes.getSelectionModel().getSelectedItem();
+
         if (seleccion == null) {
             mostrarError("Seleccione un cliente de la tabla para editar.");
             return;
         }
+
         modoEdicion = true;
         activarFormulario();
         desactivarNavegacion();
         lblMensaje.setText("");
     }
 
+    /**
+     * Selecciona el primer cliente de la tabla.
+     */
     @FXML
     private void handlePrimero() {
         if (!tablaClientes.getItems().isEmpty()) {
@@ -207,26 +346,39 @@ public class ClienteController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el cliente anterior al registro actualmente seleccionado.
+     */
     @FXML
     private void handleAnterior() {
         if (!tablaClientes.getItems().isEmpty()) {
             tablaClientes.getSelectionModel().selectPrevious();
+
             if (tablaClientes.getSelectionModel().getSelectedIndex() >= 0) {
-                tablaClientes.scrollTo(tablaClientes.getSelectionModel().getSelectedIndex());
+                tablaClientes.scrollTo(
+                        tablaClientes.getSelectionModel().getSelectedIndex());
             }
         }
     }
 
+    /**
+     * Selecciona el cliente siguiente al registro actualmente seleccionado.
+     */
     @FXML
     private void handleSiguiente() {
         if (!tablaClientes.getItems().isEmpty()) {
             tablaClientes.getSelectionModel().selectNext();
+
             if (tablaClientes.getSelectionModel().getSelectedIndex() >= 0) {
-                tablaClientes.scrollTo(tablaClientes.getSelectionModel().getSelectedIndex());
+                tablaClientes.scrollTo(
+                        tablaClientes.getSelectionModel().getSelectedIndex());
             }
         }
     }
 
+    /**
+     * Selecciona el último cliente de la tabla.
+     */
     @FXML
     private void handleUltimo() {
         if (!tablaClientes.getItems().isEmpty()) {
@@ -235,6 +387,9 @@ public class ClienteController implements Initializable {
         }
     }
 
+    /**
+     * Regresa a la vista correspondiente al rol del usuario actual.
+     */
     @FXML
     private void handleVolver() {
         try {
@@ -244,6 +399,9 @@ public class ClienteController implements Initializable {
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario de clientes.
+     */
     private void limpiarFormulario() {
         txtCui.clear();
         txtNombre.clear();
@@ -251,6 +409,9 @@ public class ClienteController implements Initializable {
         txtCorreo.clear();
     }
 
+    /**
+     * Habilita los campos del formulario para permitir su edición.
+     */
     private void activarFormulario() {
         txtCui.setDisable(false);
         txtNombre.setDisable(false);
@@ -258,6 +419,9 @@ public class ClienteController implements Initializable {
         txtCorreo.setDisable(false);
     }
 
+    /**
+     * Deshabilita los campos del formulario para evitar modificaciones.
+     */
     private void desactivarFormulario() {
         txtCui.setDisable(true);
         txtNombre.setDisable(true);
@@ -265,6 +429,10 @@ public class ClienteController implements Initializable {
         txtCorreo.setDisable(true);
     }
 
+    /**
+     * Habilita la tabla, botones y campo de búsqueda utilizados
+     * para navegar entre los clientes.
+     */
     private void activarNavegacion() {
         tablaClientes.setDisable(false);
         btnNuevo.setDisable(false);
@@ -276,6 +444,10 @@ public class ClienteController implements Initializable {
         txtBuscar.setDisable(false);
     }
 
+    /**
+     * Deshabilita la tabla, botones y campo de búsqueda utilizados
+     * para navegar entre los clientes.
+     */
     private void desactivarNavegacion() {
         tablaClientes.setDisable(true);
         btnNuevo.setDisable(true);
@@ -287,6 +459,11 @@ public class ClienteController implements Initializable {
         txtBuscar.setDisable(true);
     }
 
+    /**
+     * Muestra una ventana de alerta indicando un error.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -295,6 +472,11 @@ public class ClienteController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Muestra una ventana de alerta indicando una advertencia.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarAdvertencia(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Advertencia");
@@ -302,5 +484,4 @@ public class ClienteController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
 }
