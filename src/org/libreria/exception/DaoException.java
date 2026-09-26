@@ -1,21 +1,35 @@
 package org.libreria.exception;
 
 /**
- * Excepción de la capa de acceso a datos.
+ * Excepción personalizada utilizada para representar errores ocurridos
+ * en la capa de acceso a datos de la aplicación.
  *
- * Se lanza cuando una operación contra la base de datos (vía procedimiento
- * almacenado) falla por un error real: conexión caída, SQL inválido, etc.
+ * Se utiliza cuando una operación contra la base de datos, generalmente
+ * mediante procedimientos almacenados, falla debido a problemas como
+ * errores de conexión, sentencias SQL inválidas u otros errores relacionados
+ * con el acceso a los datos.
  *
- * A diferencia del enfoque anterior —devolver false/null y solo imprimir en
- * consola—, propagar DaoException permite que el controlador muestre al
- * usuario un mensaje de error claro en lugar de fallar en silencio.
+ * @author Esteban Interiano
+ * @version 1.0.0
  */
 public class DaoException extends RuntimeException {
 
+    /**
+     * Crea una nueva excepción de acceso a datos con el mensaje especificado.
+     *
+     * @param mensaje mensaje que describe el error ocurrido.
+     */
     public DaoException(String mensaje) {
         super(mensaje);
     }
 
+    /**
+     * Crea una nueva excepción de acceso a datos con un mensaje y la causa
+     * original del error.
+     *
+     * @param mensaje mensaje que describe el error ocurrido.
+     * @param causa excepción original que provocó el error.
+     */
     public DaoException(String mensaje, Throwable causa) {
         super(mensaje, causa);
     }
