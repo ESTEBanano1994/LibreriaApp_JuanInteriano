@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.libreria.dao.AutorLibroDAO;
+import org.libreria.DAO.AutorLibroDAO;
 import org.libreria.exception.DaoException;
 import org.libreria.model.AutorLibro;
 import org.libreria.util.Conexion;

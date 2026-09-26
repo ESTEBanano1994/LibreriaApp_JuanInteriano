@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import org.libreria.dao.UsuarioDAO;
+import org.libreria.DAO.UsuarioDAO;
 import org.libreria.exception.DaoException;
 import org.libreria.model.Usuario;
 import org.libreria.util.Conexion;

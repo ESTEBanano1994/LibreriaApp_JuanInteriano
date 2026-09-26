@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.libreria.dao.DetalleVentaDAO;
+import org.libreria.DAO.DetalleVentaDAO;
 import org.libreria.exception.DaoException;
 import org.libreria.model.DetalleVenta;
 import org.libreria.util.Conexion;

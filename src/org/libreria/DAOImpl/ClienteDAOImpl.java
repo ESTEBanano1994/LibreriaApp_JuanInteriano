@@ -13,7 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.libreria.dao.ClienteDAO;
+import org.libreria.DAO.ClienteDAO;
 import org.libreria.exception.DaoException;
 import org.libreria.model.Cliente;
 import org.libreria.util.Conexion;
