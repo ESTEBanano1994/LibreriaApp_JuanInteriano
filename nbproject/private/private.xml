@@ -3,7 +3,37 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/juan_esteban/bim_4/6/LibreriaApp_JuanInteriano/src/org/libreria/system/Main.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/controller/AdminDashboardController.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/AutorDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/system/Main.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org.libreria.view/DetalleVentaView.fxml</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/model/AutorLibro.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/CategoriaDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/DetalleVentaDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/CategoriaDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/EditorialDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/VentaDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/LibroDao.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/UsuarioDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/EditorialDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/AutorLibroDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/AutorLibroDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org.libreria.view/AutorLibro.fxml</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/ClienteDAO.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/controller/DetalleVentaController.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/DetalleVentaDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/manager/SesionContext.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/model/Usuario.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/util/SecurityUtil.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/model/Categoria.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/VentaDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/model/Venta.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/ClienteDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/LibroDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAOImpl/AutorDAOImpl.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/Crud.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/exception/ValidacionException.java</file>
+            <file>file:/C:/juan_esteban/bim_4/5/LibreriaApp_JuanInteriano/src/org/libreria/DAO/UsuarioDAO.java</file>
         </group>
     </open-files>
 </project-private>
