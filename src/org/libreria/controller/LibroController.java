@@ -1,9 +1,5 @@
 package org.libreria.controller;
 
-/**
- *
- * @author PC
- */
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -32,62 +28,206 @@ import org.libreria.model.Editorial;
 import org.libreria.model.Libro;
 import org.libreria.system.Main;
 
+/**
+ * Controlador encargado de gestionar la vista de libros.
+ * Permite registrar, editar, consultar y navegar entre los libros
+ * almacenados en el sistema, así como realizar búsquedas y seleccionar
+ * categorías y editoriales asociadas.
+ *
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.Libro
+ * @see org.libreria.model.Categoria
+ * @see org.libreria.model.Editorial
+ * @see org.libreria.DAO.LibroDao
+ * @see org.libreria.DAO.CategoriaDAO
+ * @see org.libreria.DAO.EditorialDAO
+ * @see org.libreria.DAOImpl.LibroDAOImpl
+ * @see org.libreria.DAOImpl.CategoriaDAOImpl
+ * @see org.libreria.DAOImpl.EditorialDAOImpl
+ * @see org.libreria.exception.DaoException
+ * @see org.libreria.exception.ValidacionException
+ * @see org.libreria.system.Main
+ */
 public class LibroController implements Initializable {
 
+    /**
+     * Campo de texto utilizado para ingresar el ISBN del libro.
+     */
     @FXML
     private TextField txtIsbn;
+
+    /**
+     * Campo de texto utilizado para ingresar el título del libro.
+     */
     @FXML
     private TextField txtTitulo;
+
+    /**
+     * Campo de texto utilizado para ingresar la fecha de publicación.
+     */
     @FXML
     private TextField txtFecha;
+
+    /**
+     * Campo de texto utilizado para ingresar el precio del libro.
+     */
     @FXML
     private TextField txtPrecio;
+
+    /**
+     * Campo de texto utilizado para ingresar la cantidad disponible
+     * en inventario.
+     */
     @FXML
     private TextField txtStock;
+
+    /**
+     * ComboBox utilizado para seleccionar la categoría del libro.
+     */
     @FXML
     private ComboBox<Categoria> cmbCategoria;
+
+    /**
+     * ComboBox utilizado para seleccionar la editorial del libro.
+     */
     @FXML
     private ComboBox<Editorial> cmbEditorial;
+
+    /**
+     * Etiqueta utilizada para mostrar mensajes al usuario.
+     */
     @FXML
     private Label lblMensaje;
+
+    /**
+     * Tabla donde se muestran los libros registrados.
+     */
     @FXML
     private TableView<Libro> tablaLibros;
+
+    /**
+     * Columna que muestra el ISBN de los libros.
+     */
     @FXML
     private TableColumn colIsbn;
+
+    /**
+     * Columna que muestra el título de los libros.
+     */
     @FXML
     private TableColumn colTitulo;
+
+    /**
+     * Columna que muestra la fecha de publicación de los libros.
+     */
     @FXML
     private TableColumn colFecha;
+
+    /**
+     * Columna que muestra el precio de los libros.
+     */
     @FXML
     private TableColumn colPrecio;
+
+    /**
+     * Columna que muestra el stock disponible de los libros.
+     */
     @FXML
     private TableColumn colStock;
+
+    /**
+     * Columna que muestra el identificador de la categoría.
+     */
     @FXML
     private TableColumn colIdCategoria;
+
+    /**
+     * Columna que muestra el NIT de la editorial.
+     */
     @FXML
     private TableColumn colNitEditorial;
+
+    /**
+     * Botón utilizado para registrar un nuevo libro.
+     */
     @FXML
     private Button btnNuevo;
+
+    /**
+     * Botón utilizado para editar el libro seleccionado.
+     */
     @FXML
     private Button btnEditar;
+
+    /**
+     * Botón utilizado para seleccionar el primer libro.
+     */
     @FXML
     private Button btnPrimero;
+
+    /**
+     * Botón utilizado para seleccionar el libro anterior.
+     */
     @FXML
     private Button btnAnterior;
+
+    /**
+     * Botón utilizado para seleccionar el libro siguiente.
+     */
     @FXML
     private Button btnSiguiente;
+
+    /**
+     * Botón utilizado para seleccionar el último libro.
+     */
     @FXML
     private Button btnUltimo;
+
+    /**
+     * Campo de texto utilizado para buscar libros.
+     */
     @FXML
     private TextField txtBuscar;
 
+    /**
+     * Indica si el formulario se encuentra actualmente en modo edición.
+     */
     private boolean modoEdicion = false;
-    private final LibroDao libroDAO = new LibroDAOImpl();
-    private final CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
-    private final EditorialDAO editorialDAO = new EditorialDAOImpl();
-    private final ObservableList<Libro> listaLibros = FXCollections.observableArrayList();
-    private final FilteredList<Libro> librosFiltrados = new FilteredList<>(listaLibros, p -> true);
 
+    /**
+     * DAO utilizado para realizar operaciones relacionadas con los libros.
+     */
+    private final LibroDao libroDAO = new LibroDAOImpl();
+
+    /**
+     * DAO utilizado para consultar las categorías disponibles.
+     */
+    private final CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
+
+    /**
+     * DAO utilizado para consultar las editoriales disponibles.
+     */
+    private final EditorialDAO editorialDAO = new EditorialDAOImpl();
+
+    /**
+     * Lista observable que contiene los libros registrados.
+     */
+    private final ObservableList<Libro> listaLibros = FXCollections.observableArrayList();
+
+    /**
+     * Lista filtrada utilizada para mostrar los resultados de búsqueda.
+     */
+    private final FilteredList<Libro> librosFiltrados =
+            new FilteredList<>(listaLibros, p -> true);
+
+    /**
+     * Inicializa el controlador, carga los libros, categorías y editoriales,
+     * configura la tabla, la búsqueda y la selección de registros.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados para la localización de la interfaz
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarTabla();
@@ -98,6 +238,10 @@ public class LibroController implements Initializable {
         configurarBusqueda();
     }
 
+    /**
+     * Configura las columnas de la tabla de libros y establece las
+     * propiedades del modelo que serán mostradas en cada columna.
+     */
     public void configurarTabla() {
         colIsbn.setCellValueFactory(new PropertyValueFactory<Libro, String>("isbn"));
         colTitulo.setCellValueFactory(new PropertyValueFactory<Libro, String>("titulo"));
@@ -108,6 +252,11 @@ public class LibroController implements Initializable {
         colNitEditorial.setCellValueFactory(new PropertyValueFactory<Libro, String>("nitEditorial"));
     }
 
+    /**
+     * Carga desde el DAO la lista de libros registrados y la asigna
+     * a la lista observable.
+     * Si ocurre un error durante la consulta, muestra una alerta.
+     */
     private void cargarTabla() {
         try {
             listaLibros.setAll(libroDAO.listarTodos());
@@ -116,6 +265,11 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Carga las categorías y editoriales disponibles en sus respectivos
+     * controles ComboBox.
+     * Si ocurre un error durante la consulta, muestra una alerta.
+     */
     private void cargarCombos() {
         try {
             cmbCategoria.setItems(FXCollections.observableArrayList(categoriaDAO.listarTodos()));
@@ -125,10 +279,19 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Configura el campo de búsqueda para detectar cambios en el texto
+     * introducido y ejecutar el filtrado de libros.
+     */
     private void configurarBusqueda() {
         txtBuscar.textProperty().addListener((obs, oldValue, newValue) -> filtrarLibros());
     }
 
+    /**
+     * Filtra los libros según el texto introducido en el campo de búsqueda.
+     * La búsqueda permite encontrar coincidencias por ISBN, título,
+     * fecha de publicación, precio, stock, categoría o editorial.
+     */
     private void filtrarLibros() {
         String busqueda = txtBuscar.getText().trim().toLowerCase();
         if (busqueda.isEmpty()) {
@@ -145,6 +308,10 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Configura el listener de selección de la tabla para cargar
+     * automáticamente los datos del libro seleccionado en el formulario.
+     */
     private void seleccionarFila() {
         tablaLibros.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -173,6 +340,12 @@ public class LibroController implements Initializable {
                 });
     }
 
+    /**
+     * Valida los datos ingresados en el formulario y registra un nuevo libro
+     * o actualiza el libro seleccionado dependiendo del modo de edición.
+     * Después de guardar correctamente, actualiza la tabla y restablece
+     * el estado del formulario.
+     */
     @FXML
     private void handleGuardar() {
         try {
@@ -229,6 +402,10 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Cancela la operación actual y restablece el formulario y los
+     * controles de navegación a su estado original.
+     */
     @FXML
     private void handleCancelar() {
         limpiarFormulario();
@@ -238,6 +415,10 @@ public class LibroController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Prepara el formulario para registrar un nuevo libro.
+     * Limpia los campos, activa el formulario y desactiva la navegación.
+     */
     @FXML
     private void handleNuevo() {
         modoEdicion = false;
@@ -249,6 +430,10 @@ public class LibroController implements Initializable {
         txtIsbn.requestFocus();
     }
 
+    /**
+     * Prepara el formulario para editar el libro seleccionado.
+     * Si no existe una selección, muestra un mensaje de error.
+     */
     @FXML
     private void handleEditar() {
         Libro seleccion = tablaLibros.getSelectionModel().getSelectedItem();
@@ -262,6 +447,9 @@ public class LibroController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Selecciona el primer libro disponible en la tabla.
+     */
     @FXML
     private void handlePrimero() {
         if (!tablaLibros.getItems().isEmpty()) {
@@ -270,6 +458,9 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el libro anterior al registro actualmente seleccionado.
+     */
     @FXML
     private void handleAnterior() {
         if (!tablaLibros.getItems().isEmpty()) {
@@ -280,6 +471,9 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el libro siguiente al registro actualmente seleccionado.
+     */
     @FXML
     private void handleSiguiente() {
         if (!tablaLibros.getItems().isEmpty()) {
@@ -290,6 +484,9 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el último libro disponible en la tabla.
+     */
     @FXML
     private void handleUltimo() {
         if (!tablaLibros.getItems().isEmpty()) {
@@ -298,6 +495,10 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Regresa al dashboard correspondiente al rol del usuario actual.
+     * Si ocurre un error durante la navegación, muestra una alerta.
+     */
     @FXML
     private void handleVolver() {
         try {
@@ -307,6 +508,10 @@ public class LibroController implements Initializable {
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario y restablece los valores
+     * seleccionados de categoría y editorial.
+     */
     private void limpiarFormulario() {
         txtIsbn.clear();
         txtTitulo.clear();
@@ -317,6 +522,10 @@ public class LibroController implements Initializable {
         cmbEditorial.setValue(null);
     }
 
+    /**
+     * Activa los campos del formulario para permitir la edición
+     * o el registro de información.
+     */
     private void activarFormulario() {
         txtIsbn.setDisable(false);
         txtTitulo.setDisable(false);
@@ -327,6 +536,10 @@ public class LibroController implements Initializable {
         cmbEditorial.setDisable(false);
     }
 
+    /**
+     * Desactiva los campos del formulario para impedir modificaciones
+     * mientras no se encuentre en modo de registro o edición.
+     */
     private void desactivarFormulario() {
         txtIsbn.setDisable(true);
         txtTitulo.setDisable(true);
@@ -337,6 +550,9 @@ public class LibroController implements Initializable {
         cmbEditorial.setDisable(true);
     }
 
+    /**
+     * Activa la tabla, los botones de navegación y el campo de búsqueda.
+     */
     private void activarNavegacion() {
         tablaLibros.setDisable(false);
         btnNuevo.setDisable(false);
@@ -348,6 +564,10 @@ public class LibroController implements Initializable {
         txtBuscar.setDisable(false);
     }
 
+    /**
+     * Desactiva la tabla, los botones de navegación y el campo de búsqueda
+     * mientras se realiza una operación de registro o edición.
+     */
     private void desactivarNavegacion() {
         tablaLibros.setDisable(true);
         btnNuevo.setDisable(true);
@@ -359,6 +579,11 @@ public class LibroController implements Initializable {
         txtBuscar.setDisable(true);
     }
 
+    /**
+     * Muestra una alerta de tipo error con el mensaje especificado.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -367,6 +592,11 @@ public class LibroController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Muestra una alerta de tipo advertencia con el mensaje especificado.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarAdvertencia(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Advertencia");
