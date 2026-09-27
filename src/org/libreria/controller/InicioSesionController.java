@@ -1,9 +1,5 @@
 package org.libreria.controller;
 
-/**
- *
- * @author PC
- */
 import java.io.IOException;
 import org.libreria.DAO.UsuarioDAO;
 import org.libreria.DAOImpl.UsuarioDAOImpl;
@@ -26,25 +22,77 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * Controlador encargado de gestionar el inicio de sesión de los usuarios
+ * en la aplicación.
+ * Permite validar las credenciales, autenticar al usuario mediante el DAO,
+ * establecer la sesión actual y redirigir al dashboard correspondiente
+ * según el rol del usuario.
+ *
+ * @author Esteban Interiano
+ * @version 1.0.0
+ * @see org.libreria.model.Usuario
+ * @see org.libreria.DAO.UsuarioDAO
+ * @see org.libreria.DAOImpl.UsuarioDAOImpl
+ * @see org.libreria.manager.SesionContext
+ * @see org.libreria.util.SecurityUtil
+ * @see org.libreria.exception.ValidacionException
+ * @see org.libreria.exception.DaoException
+ * @see org.libreria.system.Main
+ */
 public class InicioSesionController implements Initializable {
 
+    /**
+     * Campo de texto donde el usuario introduce su nombre de usuario.
+     */
     @FXML
     private TextField txtUsuario;
+
+    /**
+     * Campo donde el usuario introduce su contraseña.
+     */
     @FXML
     private PasswordField txtPassword;
+
+    /**
+     * Botón utilizado para iniciar sesión.
+     */
     @FXML
     private Button btnIniciarSesion;
+
+    /**
+     * Etiqueta utilizada para mostrar mensajes relacionados con el inicio
+     * de sesión.
+     */
     @FXML
     private Label lblMensaje;
 
+    /**
+     * DAO utilizado para realizar las operaciones relacionadas con los
+     * usuarios.
+     */
     private UsuarioDAO usuarioDAO;
 
+    /**
+     * Inicializa el controlador y prepara el DAO de usuarios.
+     * También limpia el mensaje mostrado en la interfaz.
+     *
+     * @param url ubicación utilizada para resolver rutas relativas
+     * @param rb recursos utilizados para la localización de la interfaz
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         usuarioDAO = new UsuarioDAOImpl();
         lblMensaje.setText("");
     }
 
+    /**
+     * Procesa el intento de inicio de sesión.
+     * Valida que el usuario y la contraseña no estén vacíos, genera el hash
+     * de la contraseña y consulta las credenciales mediante el DAO.
+     *
+     * @param evento evento generado al presionar el botón de inicio de sesión
+     */
     @FXML
     public void eventoInicioSesion(ActionEvent evento) {
         try {
@@ -70,6 +118,13 @@ public class InicioSesionController implements Initializable {
         }
     }
 
+    /**
+     * Procesa la acción para acceder al formulario de registro de usuarios.
+     * Redirige a la vista correspondiente y muestra un mensaje en caso
+     * de que ocurra un error al cargarla.
+     *
+     * @param evento evento generado al presionar el botón de registro
+     */
     @FXML
     public void eventoRegistrarse(ActionEvent evento) {
         try {
@@ -80,6 +135,12 @@ public class InicioSesionController implements Initializable {
         }
     }
 
+    /**
+     * Establece el usuario autenticado en el contexto de sesión y abre
+     * el dashboard correspondiente según su rol.
+     *
+     * @param usuario usuario que ha iniciado sesión correctamente
+     */
     private void abrirDashboard(Usuario usuario) {
         SesionContext.getInstancia().setUsuarioActual(usuario);
 
@@ -97,6 +158,12 @@ public class InicioSesionController implements Initializable {
         }
     }
 
+    /**
+     * Muestra una ventana de alerta con el tipo y mensaje especificados.
+     *
+     * @param tipo tipo de alerta que se mostrará
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarAlerta(Alert.AlertType tipo, String mensaje) {
         Alert alerta = new Alert(tipo, mensaje, ButtonType.OK);
         alerta.showAndWait();
