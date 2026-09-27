@@ -1,9 +1,5 @@
 package org.libreria.controller;
 
-/**
- *
- * @author PC
- */
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -30,6 +26,14 @@ import org.libreria.model.Cliente;
 import org.libreria.model.Venta;
 import org.libreria.system.Main;
 
+/**
+ * Controlador encargado de gestionar la vista de listado de ventas.
+ * Permite consultar, buscar, registrar y editar las ventas almacenadas,
+ * así como seleccionar clientes y navegar entre los registros.
+ *
+ * @author Juan Esteban Interiano Riera
+ * @version 1.0.0
+ */
 public class ListaVentasController implements Initializable {
 
     @FXML
@@ -72,6 +76,13 @@ public class ListaVentasController implements Initializable {
     private final ObservableList<Venta> listaVentas = FXCollections.observableArrayList();
     private final FilteredList<Venta> ventasFiltradas = new FilteredList<>(listaVentas, p -> true);
 
+    /**
+     * Inicializa los componentes de la vista y carga la información
+     * necesaria para mostrar las ventas y clientes.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados por la vista
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarTabla();
@@ -82,6 +93,10 @@ public class ListaVentasController implements Initializable {
         configurarBusqueda();
     }
 
+    /**
+     * Configura las columnas de la tabla de ventas y establece
+     * las propiedades del modelo que serán mostradas.
+     */
     public void configurarTabla() {
         colNoVenta.setCellValueFactory(new PropertyValueFactory<Venta, Integer>("noVenta"));
         colFechaVenta.setCellValueFactory(new PropertyValueFactory<Venta, String>("fechaVenta"));
@@ -90,6 +105,10 @@ public class ListaVentasController implements Initializable {
         colUsuario.setCellValueFactory(new PropertyValueFactory<Venta, Integer>("idUsuario"));
     }
 
+    /**
+     * Obtiene todas las ventas mediante el DAO y las carga
+     * en la lista utilizada por la tabla.
+     */
     private void cargarTabla() {
         try {
             listaVentas.setAll(ventaDAO.listarTodos());
@@ -98,6 +117,10 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Obtiene todos los clientes mediante el DAO y los carga
+     * en el ComboBox de selección de clientes.
+     */
     private void cargarClientes() {
         try {
             cmbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listarTodos()));
@@ -106,10 +129,19 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Configura el listener del campo de búsqueda para filtrar
+     * las ventas cada vez que cambia el texto ingresado.
+     */
     private void configurarBusqueda() {
         txtBuscar.textProperty().addListener((obs, oldValue, newValue) -> filtrarVentas());
     }
 
+    /**
+     * Filtra las ventas de acuerdo con el texto ingresado por el usuario.
+     * La búsqueda se realiza sobre el número de venta, fecha, total,
+     * CUI del cliente e identificador del usuario.
+     */
     private void filtrarVentas() {
         String busqueda = txtBuscar.getText().trim().toLowerCase();
         if (busqueda.isEmpty()) {
@@ -124,6 +156,11 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Configura el evento de selección de una fila de la tabla.
+     * Cuando se selecciona una venta, sus datos se cargan en el formulario
+     * y los controles de edición son desactivados.
+     */
     private void seleccionarFila() {
         tablaVentas.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -141,6 +178,13 @@ public class ListaVentasController implements Initializable {
                 });
     }
 
+    /**
+     * Guarda una nueva venta o actualiza una venta existente,
+     * dependiendo del modo actual del formulario.
+     *
+     * @throws ValidacionException si los datos ingresados no cumplen
+     * las validaciones establecidas
+     */
     @FXML
     private void handleGuardar() {
         try {
@@ -183,6 +227,10 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Cancela la operación actual y restablece el formulario
+     * a su estado inicial.
+     */
     @FXML
     private void handleCancelar() {
         limpiarFormulario();
@@ -193,6 +241,9 @@ public class ListaVentasController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Prepara el formulario para registrar una nueva venta.
+     */
     @FXML
     private void handleNuevo() {
         modoEdicion = false;
@@ -205,6 +256,10 @@ public class ListaVentasController implements Initializable {
         txtTotal.requestFocus();
     }
 
+    /**
+     * Prepara el formulario para editar la venta seleccionada.
+     * Muestra un mensaje de error si no existe una venta seleccionada.
+     */
     @FXML
     private void handleEditar() {
         Venta seleccion = tablaVentas.getSelectionModel().getSelectedItem();
@@ -219,6 +274,9 @@ public class ListaVentasController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Selecciona el primer registro disponible en la tabla.
+     */
     @FXML
     private void handlePrimero() {
         if (!tablaVentas.getItems().isEmpty()) {
@@ -227,6 +285,9 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el registro anterior al registro actualmente seleccionado.
+     */
     @FXML
     private void handleAnterior() {
         if (!tablaVentas.getItems().isEmpty()) {
@@ -237,6 +298,9 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el registro siguiente al registro actualmente seleccionado.
+     */
     @FXML
     private void handleSiguiente() {
         if (!tablaVentas.getItems().isEmpty()) {
@@ -247,6 +311,9 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el último registro disponible en la tabla.
+     */
     @FXML
     private void handleUltimo() {
         if (!tablaVentas.getItems().isEmpty()) {
@@ -255,6 +322,10 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Regresa a la vista del dashboard correspondiente al rol
+     * del usuario que inició sesión.
+     */
     @FXML
     private void handleVolver() {
         try {
@@ -264,21 +335,35 @@ public class ListaVentasController implements Initializable {
         }
     }
 
+    /**
+     * Limpia los valores ingresados en el formulario de venta.
+     */
     private void limpiarFormulario() {
         txtTotal.clear();
         cmbCliente.setValue(null);
     }
 
+    /**
+     * Habilita los controles utilizados para ingresar o modificar
+     * información de una venta.
+     */
     private void activarFormulario() {
         txtTotal.setDisable(false);
         cmbCliente.setDisable(false);
     }
 
+    /**
+     * Deshabilita los controles del formulario de venta.
+     */
     private void desactivarFormulario() {
         txtTotal.setDisable(true);
         cmbCliente.setDisable(true);
     }
 
+    /**
+     * Habilita la tabla, los botones de navegación, edición,
+     * creación y el campo de búsqueda.
+     */
     private void activarNavegacion() {
         tablaVentas.setDisable(false);
         btnNuevo.setDisable(false);
@@ -290,6 +375,10 @@ public class ListaVentasController implements Initializable {
         txtBuscar.setDisable(false);
     }
 
+    /**
+     * Deshabilita la tabla, los botones de navegación, edición,
+     * creación y el campo de búsqueda.
+     */
     private void desactivarNavegacion() {
         tablaVentas.setDisable(true);
         btnNuevo.setDisable(true);
@@ -301,6 +390,11 @@ public class ListaVentasController implements Initializable {
         txtBuscar.setDisable(true);
     }
 
+    /**
+     * Muestra una ventana de alerta de tipo error con el mensaje indicado.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -309,6 +403,11 @@ public class ListaVentasController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Muestra una ventana de alerta de tipo advertencia con el mensaje indicado.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarAdvertencia(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Advertencia");
@@ -316,5 +415,5 @@ public class ListaVentasController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
 }
+
