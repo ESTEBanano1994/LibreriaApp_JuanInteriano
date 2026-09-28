@@ -1,9 +1,5 @@
 package org.libreria.controller;
 
-/**
- *
- * @author PC
- */
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +20,16 @@ import org.libreria.model.Usuario;
 import org.libreria.system.Main;
 import org.libreria.util.SecurityUtil;
 
+/**
+ * Controlador encargado de gestionar el registro de nuevos usuarios
+ * en el sistema de la librería.
+ * Permite ingresar los datos del usuario, validar la información,
+ * generar el hash de la contraseña y registrar el usuario mediante
+ * la capa de acceso a datos.
+ *
+ * @author Juan Esteban Interiano Riera
+ * @version 1.0.0
+ */
 public class RegistrarUsuarioController implements Initializable {
 
     @FXML
@@ -47,12 +53,27 @@ public class RegistrarUsuarioController implements Initializable {
 
     private UsuarioDAO usuarioDAO;
 
+    /**
+     * Inicializa el controlador y crea la instancia del DAO
+     * utilizada para realizar las operaciones de registro de usuarios.
+     *
+     * @param url ubicación utilizada para resolver rutas relativas
+     * @param rb recursos utilizados por la vista
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         usuarioDAO = new UsuarioDAOImpl();
         lblMensaje.setText("");
     }
 
+    /**
+     * Valida los datos ingresados en el formulario y registra
+     * un nuevo usuario en el sistema.
+     * La contraseña es convertida a un hash SHA-256 antes de
+     * almacenarse mediante el DAO.
+     *
+     * @param evento evento generado al presionar el botón de registro
+     */
     @FXML
     public void eventoRegistrar(ActionEvent evento) {
         try {
@@ -65,12 +86,21 @@ public class RegistrarUsuarioController implements Initializable {
                     "Las contraseñas no coinciden.");
             ValidacionException.validarLongitudMinima(txtPassword.getText(), 6,
                     "La contraseña debe tener al menos 6 caracteres.");
+
             String usuario = txtUsuario.getText().trim();
             String email = txtEmail.getText().trim();
             String nombre = txtNombre.getText().trim();
             String apellido = txtApellido.getText().trim();
             String passwordHash = SecurityUtil.hashSHA256(txtPassword.getText());
-            Usuario nuevoUsuario = new Usuario(usuario, email, nombre, apellido, passwordHash, "empleado");
+
+            Usuario nuevoUsuario = new Usuario(
+                    usuario,
+                    email,
+                    nombre,
+                    apellido,
+                    passwordHash,
+                    "empleado");
+
             boolean registrado = usuarioDAO.crearUsuario(nuevoUsuario);
 
             if (registrado) {
@@ -90,6 +120,12 @@ public class RegistrarUsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Regresa a la pantalla de inicio de sesión sin realizar
+     * el registro de un nuevo usuario.
+     *
+     * @param evento evento generado al presionar el botón de volver
+     */
     @FXML
     public void eventoVolver(ActionEvent evento) {
         try {
@@ -99,8 +135,15 @@ public class RegistrarUsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Muestra una ventana de alerta con el tipo y mensaje especificados.
+     *
+     * @param tipo tipo de alerta que será mostrado
+     * @param mensaje mensaje que será presentado al usuario
+     */
     private void mostrarAlerta(Alert.AlertType tipo, String mensaje) {
         Alert alerta = new Alert(tipo, mensaje, ButtonType.OK);
         alerta.showAndWait();
     }
 }
+
