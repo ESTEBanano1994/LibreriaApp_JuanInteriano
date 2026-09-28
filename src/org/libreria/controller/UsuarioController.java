@@ -1,9 +1,5 @@
 package org.libreria.controller;
 
-/**
- *
- * @author PC
- */
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
@@ -33,6 +29,15 @@ import org.libreria.model.Usuario;
 import org.libreria.system.Main;
 import org.libreria.util.SecurityUtil;
 
+/**
+ * Controlador encargado de gestionar los usuarios del sistema.
+ * Permite registrar, editar, buscar, cambiar contraseñas, desactivar
+ * y eliminar usuarios, además de controlar la navegación entre los
+ * registros mostrados en la tabla.
+ *
+ * @author Juan Esteban Interiano Riera
+ * @version 1.0.0
+ */
 public class UsuarioController implements Initializable {
 
     @FXML
@@ -96,6 +101,14 @@ public class UsuarioController implements Initializable {
     private final ObservableList<Usuario> listaUsuarios = FXCollections.observableArrayList();
     private final FilteredList<Usuario> usuariosFiltrados = new FilteredList<>(listaUsuarios, p -> true);
 
+    /**
+     * Inicializa los componentes de la vista, configura los roles
+     * disponibles, carga los usuarios y establece los eventos
+     * necesarios para la interacción con la tabla y el formulario.
+     *
+     * @param location ubicación utilizada para resolver rutas relativas
+     * @param resources recursos utilizados por la vista
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cmbRol.setItems(FXCollections.observableArrayList("admin", "empleado", "cajero"));
@@ -107,6 +120,10 @@ public class UsuarioController implements Initializable {
         desactivarFormulario();
     }
 
+    /**
+     * Configura las columnas de la tabla de usuarios y establece
+     * las propiedades del modelo que serán mostradas.
+     */
     public void configurarTabla() {
         colId.setCellValueFactory(new PropertyValueFactory<Usuario, Integer>("id"));
         colUsername.setCellValueFactory(new PropertyValueFactory<Usuario, String>("username"));
@@ -118,6 +135,10 @@ public class UsuarioController implements Initializable {
         colFecha.setCellValueFactory(new PropertyValueFactory<Usuario, Timestamp>("fechaCreacion"));
     }
 
+    /**
+     * Obtiene todos los usuarios mediante el DAO y los carga
+     * en la lista utilizada por la tabla.
+     */
     private void cargarTabla() {
         try {
             listaUsuarios.setAll(usuarioDAO.listarTodosUsuarios());
@@ -126,10 +147,19 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Configura el listener del campo de búsqueda para actualizar
+     * el filtro de usuarios cada vez que cambia el texto ingresado.
+     */
     private void configurarBusqueda() {
         txtBuscar.textProperty().addListener((obs, oldValue, newValue) -> filtrarUsuarios());
     }
 
+    /**
+     * Filtra los usuarios de acuerdo con el texto ingresado.
+     * La búsqueda se realiza sobre el identificador, nombre de usuario,
+     * correo electrónico y rol.
+     */
     private void filtrarUsuarios() {
         String busqueda = txtBuscar.getText().trim().toLowerCase();
         if (busqueda.isEmpty()) {
@@ -143,6 +173,11 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Configura el evento de selección de una fila de la tabla.
+     * Cuando se selecciona un usuario, sus datos se muestran en
+     * el formulario y este queda desactivado.
+     */
     private void seleccionarFila() {
         tablaUsuarios.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -153,6 +188,12 @@ public class UsuarioController implements Initializable {
                 });
     }
 
+    /**
+     * Muestra los datos del usuario seleccionado en los controles
+     * correspondientes del formulario.
+     *
+     * @param usuario usuario cuyos datos serán mostrados
+     */
     private void mostrarEnFormulario(Usuario usuario) {
         txtUsername.setText(usuario.getUsername());
         txtEmail.setText(usuario.getEmail());
@@ -163,6 +204,11 @@ public class UsuarioController implements Initializable {
         txtPassword.clear();
     }
 
+    /**
+     * Valida y guarda los datos ingresados en el formulario.
+     * Dependiendo del modo actual, registra un nuevo usuario o
+     * actualiza los datos de un usuario existente.
+     */
     @FXML
     private void handleGuardar() {
         try {
@@ -212,6 +258,10 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Cancela la operación actual y restablece el formulario
+     * a su estado inicial.
+     */
     @FXML
     private void handleCancelar() {
         limpiarFormulario();
@@ -222,6 +272,10 @@ public class UsuarioController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Prepara el formulario para registrar un nuevo usuario.
+     * Establece el rol de empleado y activa los controles del formulario.
+     */
     @FXML
     private void handleNuevo() {
         modoEdicion = false;
@@ -236,6 +290,10 @@ public class UsuarioController implements Initializable {
         txtUsername.requestFocus();
     }
 
+    /**
+     * Prepara el formulario para editar el usuario seleccionado.
+     * Muestra un mensaje de error si no existe un usuario seleccionado.
+     */
     @FXML
     private void handleEditar() {
         Usuario seleccion = tablaUsuarios.getSelectionModel().getSelectedItem();
@@ -251,6 +309,11 @@ public class UsuarioController implements Initializable {
         lblMensaje.setText("");
     }
 
+    /**
+     * Solicita una nueva contraseña para el usuario seleccionado,
+     * valida su contenido, genera su hash y actualiza la contraseña
+     * mediante el DAO.
+     */
     @FXML
     private void handleCambiarPassword() {
         Usuario seleccion = tablaUsuarios.getSelectionModel().getSelectedItem();
@@ -258,6 +321,7 @@ public class UsuarioController implements Initializable {
             mostrarError("Seleccione un usuario para cambiar la contraseña.");
             return;
         }
+
         TextInputDialog dialogo = new TextInputDialog();
         dialogo.setTitle("Cambiar Contraseña");
         dialogo.setHeaderText("Nueva contraseña para: " + seleccion.getUsername());
@@ -281,6 +345,10 @@ public class UsuarioController implements Initializable {
         });
     }
 
+    /**
+     * Desactiva el usuario seleccionado después de solicitar
+     * confirmación al usuario actual.
+     */
     @FXML
     private void handleDesactivar() {
         Usuario seleccion = tablaUsuarios.getSelectionModel().getSelectedItem();
@@ -288,13 +356,16 @@ public class UsuarioController implements Initializable {
             mostrarError("Seleccione un usuario para desactivar.");
             return;
         }
+
         if (esUsuarioActual(seleccion)) {
             mostrarError("No puede desactivar su propio usuario.");
             return;
         }
+
         if (!confirmar("Desactivar usuario", "¿Desea desactivar al usuario " + seleccion.getUsername() + "?")) {
             return;
         }
+
         try {
             if (usuarioDAO.desactivarUsuario(seleccion.getId())) {
                 lblMensaje.setText("Usuario desactivado exitosamente.");
@@ -307,6 +378,10 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Elimina definitivamente el usuario seleccionado después
+     * de solicitar confirmación y verificar que no sea el usuario actual.
+     */
     @FXML
     private void handleEliminar() {
         Usuario seleccion = tablaUsuarios.getSelectionModel().getSelectedItem();
@@ -314,14 +389,17 @@ public class UsuarioController implements Initializable {
             mostrarError("Seleccione un usuario para eliminar.");
             return;
         }
+
         if (esUsuarioActual(seleccion)) {
             mostrarError("No puede eliminar su propio usuario.");
             return;
         }
+
         if (!confirmar("Eliminar usuario",
                 "¿Desea eliminar definitivamente al usuario " + seleccion.getUsername() + "?")) {
             return;
         }
+
         try {
             if (usuarioDAO.eliminarUsuario(seleccion.getId())) {
                 lblMensaje.setText("Usuario eliminado exitosamente.");
@@ -334,11 +412,21 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Verifica si el usuario proporcionado corresponde al usuario
+     * que actualmente tiene iniciada la sesión.
+     *
+     * @param usuario usuario que será comparado con el usuario actual
+     * @return true si corresponde al usuario actual; false en caso contrario
+     */
     private boolean esUsuarioActual(Usuario usuario) {
         Usuario actual = SesionContext.getInstancia().getUsuarioActual();
         return actual != null && actual.getId() == usuario.getId();
     }
 
+    /**
+     * Selecciona el primer usuario disponible en la tabla.
+     */
     @FXML
     private void handlePrimero() {
         if (!tablaUsuarios.getItems().isEmpty()) {
@@ -347,6 +435,9 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el usuario anterior al registro actualmente seleccionado.
+     */
     @FXML
     private void handleAnterior() {
         if (!tablaUsuarios.getItems().isEmpty()) {
@@ -357,6 +448,9 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el usuario siguiente al registro actualmente seleccionado.
+     */
     @FXML
     private void handleSiguiente() {
         if (!tablaUsuarios.getItems().isEmpty()) {
@@ -367,6 +461,9 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Selecciona el último usuario disponible en la tabla.
+     */
     @FXML
     private void handleUltimo() {
         if (!tablaUsuarios.getItems().isEmpty()) {
@@ -375,6 +472,10 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Regresa al dashboard correspondiente al rol del usuario
+     * que actualmente tiene iniciada la sesión.
+     */
     @FXML
     private void handleVolver() {
         try {
@@ -384,6 +485,9 @@ public class UsuarioController implements Initializable {
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario de usuarios.
+     */
     private void limpiarFormulario() {
         txtUsername.clear();
         txtEmail.clear();
@@ -394,6 +498,10 @@ public class UsuarioController implements Initializable {
         txtPassword.clear();
     }
 
+    /**
+     * Habilita los controles del formulario para permitir
+     * el ingreso o modificación de información.
+     */
     private void activarFormulario() {
         txtUsername.setDisable(false);
         txtEmail.setDisable(false);
@@ -404,6 +512,9 @@ public class UsuarioController implements Initializable {
         txtPassword.setDisable(modoEdicion);
     }
 
+    /**
+     * Deshabilita todos los controles del formulario de usuarios.
+     */
     private void desactivarFormulario() {
         txtUsername.setDisable(true);
         txtEmail.setDisable(true);
@@ -414,6 +525,10 @@ public class UsuarioController implements Initializable {
         txtPassword.setDisable(true);
     }
 
+    /**
+     * Habilita la tabla, botones de navegación, acciones de usuario
+     * y campo de búsqueda.
+     */
     private void activarNavegacion() {
         tablaUsuarios.setDisable(false);
         btnNuevo.setDisable(false);
@@ -428,6 +543,10 @@ public class UsuarioController implements Initializable {
         txtBuscar.setDisable(false);
     }
 
+    /**
+     * Deshabilita la tabla, botones de navegación, acciones de usuario
+     * y campo de búsqueda mientras se realiza una operación en el formulario.
+     */
     private void desactivarNavegacion() {
         tablaUsuarios.setDisable(true);
         btnNuevo.setDisable(true);
@@ -442,6 +561,13 @@ public class UsuarioController implements Initializable {
         txtBuscar.setDisable(true);
     }
 
+    /**
+     * Muestra un cuadro de confirmación y obtiene la respuesta del usuario.
+     *
+     * @param titulo título mostrado en la ventana de confirmación
+     * @param mensaje mensaje que será presentado al usuario
+     * @return true si el usuario selecciona la opción Sí; false en caso contrario
+     */
     private boolean confirmar(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, mensaje, ButtonType.YES, ButtonType.NO);
         alert.setTitle(titulo);
@@ -449,6 +575,11 @@ public class UsuarioController implements Initializable {
         return alert.showAndWait().orElse(ButtonType.NO) == ButtonType.YES;
     }
 
+    /**
+     * Muestra una ventana de alerta de tipo error con el mensaje indicado.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -457,6 +588,11 @@ public class UsuarioController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Muestra una ventana de alerta de tipo advertencia con el mensaje indicado.
+     *
+     * @param mensaje mensaje que será mostrado al usuario
+     */
     private void mostrarAdvertencia(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Advertencia");
@@ -464,5 +600,4 @@ public class UsuarioController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
 }
